@@ -8,21 +8,8 @@
 #include "GLFW/glfw3.h"
 #include <cstdio>   // вывод сообщений printf, fprintf
 #include <cmath>    // cosf, sinf для расчёта вершин
+#include "Shader.h" // класс Shader для работы с шейдерами
 
-// Вершинный шейдер: просто передаёт позицию дальше
-const char* vertex_shader = R"(#version 410 core
-layout(location = 0) in vec3 vp;
-void main() {
-    gl_Position = vec4(vp, 1.0);
-})";
-
-// Фрагментный шейдер: цвет приходит снаружи через uniform
-const char* fragment_shader = R"(#version 410 core
-uniform vec4 ourColor;
-out vec4 frag_colour;
-void main() {
-    frag_colour = ourColor;
-})";
 
 int main() {
     // ИНИЦИАЛИЗАЦИЯ GLFW 
@@ -112,41 +99,8 @@ int main() {
     glBindVertexArray(0);                                     // отвязываем VAO (EBO до этого не отвязываем!)
 
     // КОМПИЛЯЦИЯ ШЕЙДЕРОВ И СБОРКА ПРОГРАММЫ
-    GLint success;
-    GLchar infoLog[1024];
+    Shader shader("shaders/shader.vert", "shaders/shader.frag");
 
-    GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vs, 1, &vertex_shader, NULL);
-    glCompileShader(vs);
-    glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(vs, 1024, NULL, infoLog);
-        fprintf(stderr, "Ошибка вершинного шейдера:\n%s\n", infoLog);
-    }
-
-    GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fs, 1, &fragment_shader, NULL);
-    glCompileShader(fs);
-    glGetShaderiv(fs, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(fs, 1024, NULL, infoLog);
-        fprintf(stderr, "Ошибка фрагментного шейдера:\n%s\n", infoLog);
-    }
-
-    GLuint shader_program = glCreateProgram();
-    glAttachShader(shader_program, vs);
-    glAttachShader(shader_program, fs);
-    glLinkProgram(shader_program);
-    glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shader_program, 1024, NULL, infoLog);
-        fprintf(stderr, "Ошибка линковки программы:\n%s\n", infoLog);
-    }
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-
-    // место uniform-переменной в шейдере (ищем один раз, до цикла)
-    GLint colorLocation = glGetUniformLocation(shader_program, "ourColor");
 
     // ОСНОВНОЙ ЦИКЛ
     while (!glfwWindowShouldClose(window)) {
@@ -160,8 +114,8 @@ int main() {
         float g = sinf(t + 2.0f) * 0.5f + 0.5f;
         float b = sinf(t + 4.0f) * 0.5f + 0.5f;
 
-        glUseProgram(shader_program);                      // сначала включаем программу,
-        glUniform4f(colorLocation, r, g, b, 1.0f);         // и только потом передаём uniform
+        shader.use();
+        shader.setVec4("ourColor", r, g, b, 1.0f);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);   // 6 треугольников x 3 индекса
 
@@ -173,7 +127,7 @@ int main() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
-    glDeleteProgram(shader_program);
+    shader.remove();
     glfwTerminate();
     return 0;
 }
