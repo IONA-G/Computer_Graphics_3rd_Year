@@ -11,4 +11,5 @@ x86/
 *.obj
 *.ilk
 *.exe
+*.blend1
 "@ | Out-File -Encoding utf8 .gitignore
