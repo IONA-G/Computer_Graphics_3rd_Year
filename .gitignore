@@ -1,4 +1,3 @@
-@"
 .vs/
 x64/
 x86/
@@ -12,4 +11,8 @@ x86/
 *.ilk
 *.exe
 *.blend1
-"@ | Out-File -Encoding utf8 .gitignore
+
+# Исключения: нужны для сборки лабораторных
+!Assimp/lib/x64/
+!Assimp/bin/x64/
+!Assets/**/*.obj
