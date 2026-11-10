@@ -22,9 +22,8 @@
 | Linker → General → Additional Library Directories | `$(SolutionDir)Assimp\lib\x64` |
 | Linker → Input → Additional Dependencies | `assimp-vc145-mt.lib` |
 | Debugging → Working Directory | `$(ProjectDir)` |
-| Debugging → Environment | `PATH=$(SolutionDir)Assimp\bin\x64;%PATH%` |
+| Build Events → Post-Build Event → Command Line | `xcopy /y /d "$(SolutionDir)Assimp\bin\x64\assimp-vc145-mt.dll" "$(OutDir)"` |
 
-Путь к `.dll` добавлен в `PATH` через настройки отладки, поэтому копировать библиотеку рядом с `.exe` не нужно.
 
 ## Как устроена программа
 
