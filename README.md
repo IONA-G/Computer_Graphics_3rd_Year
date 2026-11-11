@@ -294,13 +294,13 @@ Stationary_platform
 ## Визуализация
 
 **Общий вид**
-![Общий вид](Assets/Blender_model_Cyclone-5/C5_1.png)
+![Общий вид](Assets/Blender_model_Cyclone-5/png/C5_1.png)
 
 **Сетка**
-![Сетка модели](Assets/Blender_model_Cyclone-5/C5_2.png)
+![Сетка модели](Assets/Blender_model_Cyclone-5/png/C5_2.png)
 
 **Детали модели**
-![Детали модели](Assets/Blender_model_Cyclone-5/C5_3.png)
+![Детали модели](Assets/Blender_model_Cyclone-5/png/C5_3.png)
 
 ---
 
