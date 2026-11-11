@@ -1,12 +1,41 @@
-<!-- Файл создан скриптом build-readme.ps1. Правь README в папках лабораторных и запускай скрипт заново. -->
-# Компьютерная графика, 3 курс: лабораторные работы
+# Computer Graphics Labs OpenGL
 
 Репозиторий с семью лабораторными работами по курсу «Компьютерная графика»: от окна и шестиугольника на OpenGL 1.0 до управляемой трёхмерной модели робота с освещением.
 
-**Автор:** Горбенко А. В., группа АСУбз-24-1
 **Вариант:** 14 (шестиугольник, цвет фигуры (0.5, 0.5, 1.0), цвет фона (1.0, 1.0, 0.3))
 
 **Технологии:** Visual Studio (x64), OpenGL 4.6 Core Profile, GLFW, GLEW, GLM, Assimp, Blender.
+
+## Структура репозитория
+
+```
+Computer_Graphics_3rd_Year/
+├── Gorbenko_A.V_ASUbz_24-1.slnx   решение Visual Studio (все проекты в одном решении)
+├── README.md                      общий README (собирается скриптом build-readme.ps1)
+├── build-readme.ps1               скрипт сборки общего README из README лабораторных
+├── .gitignore
+├── glew-2.3.1/                    GLEW (исходники, нужен src/glew.c)
+├── glfw-3.5.1.bin.WIN64/          GLFW (готовые бинарники для Windows)
+├── glm-X.Y.Z/                     GLM (только заголовочные файлы)
+├── Assimp/                        Assimp (include, lib/x64, bin/x64)
+├── LB1/ … LB7/                    проекты лабораторных работ
+└── Assets/
+    └── Blender_model_Cyclone-5/   модель робота: .blend, .obj, .mtl, png/, README.md
+```
+
+Библиотеки лежат в корне репозитория один раз и подключаются ко всем проектам через `$(SolutionDir)`, поэтому проекты собираются без установки чего-либо в систему.
+
+## Состав проектов
+
+| Проект | Основные файлы | Что делает |
+|---|---|---|
+| **LB1** | `LB1.cpp` | окно и контекст, шестиугольник на OpenGL 1.0 (`glBegin` / `glEnd`) |
+| **LB2** | `LB2.cpp`, `Shader.h`, `shaders/` | VAO, VBO, EBO, шейдеры, `uniform`, класс `Shader` |
+| **Assets** (ЛБ3) | `Cyclone-5.blend`, `cyclone-5.obj`, `Cyclone-5.mtl`, `png/` | 3D-модель робота «Циклон-5» в Blender, экспорт в `.obj` |
+| **LB4** | `LB4.cpp`, `Shader.h`, `shaders/` | камера (WASD, мышь), матрицы, библиотека GLM |
+| **LB5** | `LB5.cpp`, `Mesh.h`, `Model.h`, `Shader.h`, `shaders/` | импорт модели через Assimp, классы `Mesh` и `Model`, плоская заливка |
+| **LB6** | `LB6.cpp`, `Mesh.h`, `Model.h`, `Shader.h`, `shaders/` | освещение по модели Фонга: ambient, diffuse, specular |
+| **LB7** | `LB7.cpp`, `Mesh.h`, `Model.h`, `Shader.h`, `shaders/` | управление звеньями робота с клавиатуры: матрицы для каждой детали |
 
 ## Как собрать и запустить
 
